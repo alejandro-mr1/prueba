@@ -17,8 +17,16 @@ add_executable(OperacionBronx WIN32
     src/batman.cpp
     src/civil.h
     src/civil.cpp
-    src/personajes.h
-    src/personajes.cpp
+    src/guardia.h
+    src/guardia.cpp
+    src/percepcion.h
+    src/percepcion.cpp
+    src/razonamiento.h
+    src/razonamiento.cpp
+    src/accion.h
+    src/accion.cpp
+    src/aprendizaje.h
+    src/aprendizaje.cpp
     src/niveles.h
     src/niveles.cpp
     src/partida.h

@@ -2,7 +2,8 @@
 
 #include "batman.h"
 #include "civil.h"
-#include "personajes.h"
+#include "guardia.h"
+#include "percepcion.h"
 
 #include <deque>
 #include <memory>
