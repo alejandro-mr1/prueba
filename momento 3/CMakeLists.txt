@@ -8,35 +8,46 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Widgets Multimedia)
 
+set(CABECERAS
+    accion.h
+    aprendizaje.h
+    audio.h
+    batman.h
+    civil.h
+    geometria.h
+    guardia.h
+    niveles.h
+    partida.h
+    percepcion.h
+    personaje.h
+    razonamiento.h
+    ventana.h
+    vista.h
+)
+
+set(FUENTES
+    accion.cpp
+    aprendizaje.cpp
+    audio.cpp
+    batman.cpp
+    civil.cpp
+    guardia.cpp
+    main.cpp
+    niveles.cpp
+    partida.cpp
+    percepcion.cpp
+    personaje.cpp
+    razonamiento.cpp
+    ventana.cpp
+    vista.cpp
+)
+
+source_group("Header Files" FILES ${CABECERAS})
+source_group("Source Files" FILES ${FUENTES})
+
 add_executable(OperacionBronx WIN32
-    src/main.cpp
-    src/geometria.h
-    src/personaje.h
-    src/personaje.cpp
-    src/batman.h
-    src/batman.cpp
-    src/civil.h
-    src/civil.cpp
-    src/guardia.h
-    src/guardia.cpp
-    src/percepcion.h
-    src/percepcion.cpp
-    src/razonamiento.h
-    src/razonamiento.cpp
-    src/accion.h
-    src/accion.cpp
-    src/aprendizaje.h
-    src/aprendizaje.cpp
-    src/niveles.h
-    src/niveles.cpp
-    src/partida.h
-    src/partida.cpp
-    src/vista.h
-    src/vista.cpp
-    src/ventana.h
-    src/ventana.cpp
-    src/audio.h
-    src/audio.cpp
+    ${CABECERAS}
+    ${FUENTES}
     recursos/recursos.qrc
 )
 target_link_libraries(OperacionBronx PRIVATE Qt6::Widgets Qt6::Multimedia)

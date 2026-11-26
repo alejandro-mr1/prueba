@@ -34,7 +34,8 @@ En la infiltración, reúne tres evidencias y entra en la salida. Tres deteccion
 ## Archivos del proyecto
 
 - `PLAN.md` contiene las decisiones y los criterios de verificación del Momento III.
-- `src/personajes.*`, `src/niveles.*` y `src/partida.*` contienen la lógica de simulación, sin dependencias de Qt.
-- `src/ventana.*`, `src/vista.*` y `src/audio.*` integran controles, gráficos y sonido con Qt.
+- `personaje.*`, `batman.*`, `civil.*`, `niveles.*` y `partida.*` contienen la lógica de simulación, sin dependencias de Qt.
+- `guardia.*`, `percepcion.*`, `razonamiento.*`, `accion.*` y `aprendizaje.*` contienen el agente autónomo y sus componentes.
+- `ventana.*`, `vista.*` y `audio.*` integran controles, gráficos y sonido con Qt.
 - `diagramas/` contiene los diagramas de clases detallado y resumido en PDF y su fuente en Graphviz.
 - `recursos/` contiene recortes de los sprites y fondos de `momento 2/MOMENTO 2.pdf` y los sonidos sintetizados para este proyecto.
