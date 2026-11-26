@@ -1,9 +1,8 @@
 #include "partida.h"
 
-void Partida::iniciar(Dificultad dificultad)
+void Partida::iniciar()
 {
-    nivel_ = std::make_unique<Infiltracion>(dificultad);
-    dificultad_ = dificultad;
+    nivel_ = std::make_unique<Infiltracion>();
     pantalla_ = Pantalla::jugando;
 }
 
@@ -21,16 +20,8 @@ void Partida::reiniciarNivel()
         nivel_ = std::make_unique<Rescate>();
         pantalla_ = Pantalla::jugando;
     } else if (infiltracion()) {
-        iniciar(dificultad_);
+        iniciar();
     }
-}
-
-void Partida::cambiarPausa()
-{
-    if (pantalla_ == Pantalla::jugando)
-        pantalla_ = Pantalla::pausa;
-    else if (pantalla_ == Pantalla::pausa)
-        pantalla_ = Pantalla::jugando;
 }
 
 void Partida::volverAlMenu()

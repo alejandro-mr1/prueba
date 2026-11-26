@@ -3,15 +3,9 @@
 #include <stdexcept>
 
 namespace {
-PerfilDificultad crearPerfil(Dificultad dificultad)
+PerfilDificultad crearPerfil()
 {
-    switch (dificultad) {
-    case Dificultad::normal:
-        return {107, 28 * pi / 180, 108, 62, 129, 2.0, 1.0, 1.05, 1.10};
-    case Dificultad::experto:
-        return {124, 33 * pi / 180, 138, 74, 143, 3.25, 1.24, 0.81, 0.88};
-    }
-    throw std::invalid_argument("Perfil de dificultad desconocido.");
+    return {115.5, 30.5 * pi / 180.0, 123, 68, 136, 2.625, 1.12, 0.93, 0.99};
 }
 
 constexpr double radioCenital = 11.0;
@@ -23,8 +17,8 @@ double Reflector::angulo(double tiempo, double factorRapidez) const
     return central + amplitud * std::sin(tiempo * frecuencia * factorRapidez + fase);
 }
 
-Infiltracion::Infiltracion(Dificultad dificultad)
-    : Nivel(inicio_), perfil_(crearPerfil(dificultad)),
+Infiltracion::Infiltracion()
+    : Nivel(inicio_), perfil_(crearPerfil()),
       paredes_{{0, 0, 402, 138}, {553, 0, 407, 138}, {0, 138, 112, 422},
                {819, 138, 141, 422}, {112, 473, 219, 87}, {350, 336, 263, 224},
                {127, 203, 109, 57}, {235, 173, 76, 44}, {151, 347, 36, 35},
@@ -182,11 +176,10 @@ Rescate::Rescate(ParametrosRescate parametros)
     : Nivel({110, 410}), parametros_(parametros),
       techos_{{0, 410, 440, 175}, {555, 385, 365, 200}, {1225, 420, 355, 165},
               {1705, 391, 320, 194}, {2295, 402, 445, 183}},
-      obstaculos_{{265, 380, 43, 30}, {700, 355, 46, 30}, {1410, 384, 50, 36}, {2450, 370, 46, 32}},
       anclajes_{{1054, 145}, {2161, 146}}
 {
     if (!(parametros_.gravedad > 0.0 && parametros_.rapidez > 0.0 &&
-          parametros_.impulsoNormal > 0.0 && parametros_.impulsoEspecial >= parametros_.impulsoNormal &&
+          parametros_.impulsoNormal > 0.0 &&
           parametros_.cuerdaMinima >= 1.0 && parametros_.cuerdaMaxima > parametros_.cuerdaMinima &&
           parametros_.rapidezGancho > 0.0))
         throw std::invalid_argument("Parámetros de movimiento del rescate inválidos.");
@@ -264,10 +257,6 @@ void Rescate::moverPendulo(double dt)
         if (sobreTecho || siguiente.x != x) {
             pendulo_.reset();
             enSuelo_ = sobreTecho;
-            if (enSuelo_ && saltoEspecial_) {
-                batman_->aterrizarTrasSaltoEspecial();
-                saltoEspecial_ = false;
-            }
             break;
         }
     }
@@ -285,9 +274,8 @@ void Rescate::mover(const Entrada& entrada, int direccion, double dt)
     if (enSuelo_) {
         velocidad.x = direccion * parametros_.rapidez;
         velocidad.y = 0.0;
-        if (entrada.saltar || entrada.especial) {
-            saltoEspecial_ = entrada.especial && batman_->saltoEspecialDisponible();
-            velocidad.y = -(saltoEspecial_ ? parametros_.impulsoEspecial : parametros_.impulsoNormal);
+        if (entrada.saltar) {
+            velocidad.y = -parametros_.impulsoNormal;
             enSuelo_ = false;
         }
     }
@@ -299,18 +287,12 @@ void Rescate::mover(const Entrada& entrada, int direccion, double dt)
     velocidad.y += parametros_.gravedad * dt;
     siguiente.x = std::clamp(siguiente.x, radioTejado, anchoMundo_ - radioTejado);
     enSuelo_ = false;
-    for (const auto& objeto : obstaculos_)
-        enSuelo_ = aterrizar(origen, siguiente, velocidad, objeto) || enSuelo_;
     for (const auto& techo : techos_) {
         if (aterrizar(origen, siguiente, velocidad, techo)) {
             enSuelo_ = true;
             if (techo.x + 55 > control_.x)
                 control_ = {techo.x + 55, techo.y};
         }
-    }
-    if (enSuelo_ && saltoEspecial_) {
-        batman_->aterrizarTrasSaltoEspecial();
-        saltoEspecial_ = false;
     }
     batman_->trasladar(siguiente, velocidad);
 }
@@ -354,7 +336,6 @@ void Rescate::reaparecer()
     pendulo_.reset();
     preparacionGancho_ = 0.0;
     enSuelo_ = true;
-    saltoEspecial_ = false;
     batman_->trasladar(control_);
     recorrido_.clear();
     for (const auto& civil : civiles_) {

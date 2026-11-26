@@ -9,7 +9,6 @@ public:
     Audio();
     void ambiente(bool activo);
     void reproducir(Evento evento);
-    void silenciar(bool silencio);
 
 private:
     QSoundEffect ambiente_;
@@ -18,5 +17,4 @@ private:
     QSoundEffect rescate_;
     QSoundEffect gancho_;
     bool ambienteActivo_ = false;
-    bool silencio_ = false;
 };

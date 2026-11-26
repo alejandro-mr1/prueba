@@ -6,7 +6,6 @@ void Batman::actualizarHabilidades(double dt)
 {
     detective_ = std::max(0.0, detective_ - dt);
     esperaDetective_ = std::max(0.0, esperaDetective_ - dt);
-    esperaSalto_ = std::max(0.0, esperaSalto_ - dt);
 }
 
 bool Batman::activarDetective()

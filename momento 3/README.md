@@ -21,13 +21,12 @@ El binario incluido en `ejecutable/linux-x86_64/OperacionBronx` se compiló para
 
 | Tecla | Infiltración | Rescate |
 | --- | --- | --- |
-| WASD o flechas | Moverse | A/D o flechas laterales para correr |
-| Mayús | Mantener para caminar en sigilo | Pulsar para hacer un salto alto |
+| WASD | Moverse | A y D para correr |
+| Mayús | Mantener para caminar en sigilo | |
 | E | Recoger evidencia cercana | Pedir a un civil cercano que te siga |
 | Q | Revelar evidencias durante ocho segundos | |
 | Espacio | | Saltar |
 | F | | Engancharse o soltarse al balancear hacia el otro techo |
-| Esc | Pausar o reanudar | Pausar o reanudar |
 
 En la infiltración, reúne tres evidencias y entra en la salida. Tres detecciones terminan el intento. En el rescate, espera en la zona segura hasta que lleguen ambos civiles. Tienes tres minutos.
 

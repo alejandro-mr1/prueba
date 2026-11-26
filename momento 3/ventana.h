@@ -10,8 +10,6 @@
 
 #include <vector>
 
-class QCheckBox;
-class QComboBox;
 class QFrame;
 class QGridLayout;
 class QKeyEvent;
@@ -42,11 +40,7 @@ private:
     QLabel* categoria_;
     QLabel* titulo_;
     QLabel* descripcion_;
-    QLabel* etiquetaDificultad_;
-    QComboBox* dificultad_;
-    QCheckBox* sonido_;
     QPushButton* principal_;
-    QPushButton* reiniciar_;
     QPushButton* menu_;
     QTimer pulso_;
     QElapsedTimer reloj_;

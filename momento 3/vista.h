@@ -25,7 +25,6 @@ private:
     QPixmap callejones_;
     QPixmap azoteas_;
     QPixmap evidencia_;
-    QPixmap barrera_;
     std::array<QPixmap, 4> batmanCenital_;
     std::array<QPixmap, 4> guardia_;
     std::array<QPixmap, 6> batmanLateral_;

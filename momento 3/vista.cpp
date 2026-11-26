@@ -157,7 +157,7 @@ void tejado(QPainter& p, const Rectangulo& techo, int indice)
 
 Vista::Vista(const Partida& partida, QWidget* parent)
     : QWidget(parent), partida_(partida), callejones_(cargar("callejones.jpg")), azoteas_(cargar("azoteas.jpg")),
-      evidencia_(cargar("evidencia.png")), barrera_(cargar("barrera.png")),
+      evidencia_(cargar("evidencia.png")),
       batmanCenital_{cargar("batman-frente.png"), cargar("batman-espalda.png"),
                      cargar("batman-cenital-lado.png"), cargar("batman-cenital-paso.png")},
       guardia_{cargar("guardia-frente.png"), cargar("guardia-espalda.png"),
@@ -290,9 +290,6 @@ void Vista::pintarInfiltracion(QPainter& p, const Infiltracion& nivel) const
     panel(p, {700, 17, 238, 67});
     texto(p, {712, 23, 208, 24}, QStringLiteral("Detecciones   %1 / 3").arg(batman.detecciones()),
           17, batman.detecciones() > 0 ? rojo : blanco, Qt::AlignLeft | Qt::AlignVCenter, true);
-    const QString estado = partida_.dificultad() == Dificultad::experto
-        ? QStringLiteral("EXPERTO") : QStringLiteral("NORMAL");
-    texto(p, {718, 23, 205, 19}, estado, 10, tenue, Qt::AlignRight | Qt::AlignVCenter, true);
     barra(p, {712, 56, 211, 6}, nivel.alerta(), rojo);
     panel(p, {22, 442, 176, 54});
     const QString indicacion = detective ? QStringLiteral("Detective  %1 s").arg(std::ceil(batman.detectiveRestante()))
@@ -302,7 +299,7 @@ void Vista::pintarInfiltracion(QPainter& p, const Infiltracion& nivel) const
     barra(p, {33, 476, 154, 5}, progreso, turquesa);
     if (nivel.aviso())
         marcador(p, {342, 20, 276, 29}, QString::fromUtf8(nivel.aviso()), oro);
-    pie(p, QStringLiteral("WASD / Flechas  Moverse     Mayús  Sigilo     E  Interactuar     Esc  Pausa"));
+    pie(p, QStringLiteral("WASD  Moverse     Mayús  Sigilo     E  Interactuar"));
 }
 
 void Vista::pintarRescate(QPainter& p, const Rescate& nivel) const
@@ -320,8 +317,6 @@ void Vista::pintarRescate(QPainter& p, const Rescate& nivel) const
     int indiceTecho = 0;
     for (const auto& techo : nivel.techos())
         tejado(p, techo, indiceTecho++);
-    for (const auto& obstaculo : nivel.obstaculos())
-        p.drawPixmap(geometriaQt(obstaculo), barrera_, barrera_.rect());
     const auto disponible = nivel.anclajeDisponible();
     for (const Punto anclaje : nivel.anclajes()) {
         const bool cerca = disponible && disponible->x == anclaje.x;
@@ -377,5 +372,5 @@ void Vista::pintarRescate(QPainter& p, const Rescate& nivel) const
         .arg(segundos % 60, 2, 10, QLatin1Char('0'));
     texto(p, {759, 24, 169, 32}, reloj, 24, segundos <= 30 ? rojo : blanco, Qt::AlignCenter, true);
     barra(p, {766, 62, 156, 5}, nivel.restante() / 180.0, segundos <= 30 ? rojo : turquesa);
-    pie(p, QStringLiteral("A D / Flechas  Correr     Espacio  Saltar     Mayús  Salto alto     F  Gancho     E  Rescatar     Esc  Pausa"));
+    pie(p, QStringLiteral("A D  Correr     Espacio  Saltar     F  Gancho     E  Rescatar"));
 }

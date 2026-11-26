@@ -19,13 +19,11 @@ struct Entrada {
     bool accion = false;
     bool detective = false;
     bool saltar = false;
-    bool especial = false;
     bool gancho = false;
 };
 
 enum class Evento { evidencia, alerta, rescate, gancho };
 enum class Resultado { enCurso, victoria, derrota };
-enum class Dificultad { normal, experto };
 
 class Nivel {
 public:
@@ -60,7 +58,7 @@ struct Evidencia {
 
 class Infiltracion final : public Nivel {
 public:
-    explicit Infiltracion(Dificultad dificultad);
+    Infiltracion();
     void actualizar(const Entrada& entrada, double dt, std::vector<Evento>& eventos) override;
 
     const std::vector<Rectangulo>& paredes() const { return paredes_; }
@@ -100,7 +98,6 @@ struct ParametrosRescate {
     double gravedad = 790.0;
     double rapidez = 238.0;
     double impulsoNormal = 318.0;
-    double impulsoEspecial = 375.0;
     double cuerdaMinima = 170.0;
     double cuerdaMaxima = 330.0;
     double rapidezGancho = 1.35;
@@ -128,7 +125,6 @@ public:
     void actualizar(const Entrada& entrada, double dt, std::vector<Evento>& eventos) override;
 
     const std::vector<Rectangulo>& techos() const { return techos_; }
-    const std::vector<Rectangulo>& obstaculos() const { return obstaculos_; }
     const std::vector<Punto>& anclajes() const { return anclajes_; }
     const std::vector<std::unique_ptr<Civil>>& civiles() const { return civiles_; }
     const std::optional<Pendulo>& pendulo() const { return pendulo_; }
@@ -155,7 +151,6 @@ private:
 
     ParametrosRescate parametros_;
     std::vector<Rectangulo> techos_;
-    std::vector<Rectangulo> obstaculos_;
     std::vector<Punto> anclajes_;
     std::vector<std::unique_ptr<Civil>> civiles_;
     std::optional<Pendulo> pendulo_;
@@ -167,5 +162,4 @@ private:
     int direccionGancho_ = 1;
     double anchoMundo_ = 2740.0;
     bool enSuelo_ = true;
-    bool saltoEspecial_ = false;
 };
