@@ -1,0 +1,64 @@
+digraph Clases {
+  graph [rankdir=TB, bgcolor="white", pad=0.28, nodesep=0.24, ranksep=0.52, splines=polyline,
+         fontname="DejaVu Sans", labelloc=t, label="Batman: Operación Bronx — diagrama de clases"];
+  node [shape=record, style="filled,rounded", fontname="DejaVu Sans", fontsize=10, margin="0.10,0.07",
+        color="#546579", fillcolor="#f5f8fc"];
+  edge [fontname="DejaVu Sans", fontsize=8.5, color="#52677c", arrowsize=0.8, labeldistance=1.5];
+
+  subgraph cluster_gui {
+    label="Interfaz gráfica · Qt Widgets y Multimedia";
+    style=rounded; color="#7c9bbc";
+    QWidget [label="«Qt» QWidget", fillcolor="#e8f1fa"];
+    QSoundEffect [label="«Qt» QSoundEffect", fillcolor="#e8f1fa"];
+    Ventana [label="{Ventana|- partida_ : Partida\l- audio_ : Audio\l- vista_ : Vista*\l- pulso_ : QTimer\l- reloj_ : QElapsedTimer\l|+ Ventana()\l# keyPressEvent()\l# keyReleaseEvent()\l- sincronizarPantalla()\l- actualizar()\l}"];
+    Vista [label="{Vista|- partida_ : const Partida&\l- recursos gráficos : QPixmap\l|# paintEvent()\l- pintarInfiltracion()\l- pintarRescate()\l}"];
+    Audio [label="{Audio|- ambiente_, evidencia_, alerta_, rescate_, gancho_ : QSoundEffect\l|+ ambiente(activo)\l+ reproducir(evento)\l+ silenciar(silencio)\l}"];
+    Ventana -> QWidget [arrowhead=empty];
+    Vista -> QWidget [arrowhead=empty];
+    Ventana -> Vista [dir=back, arrowtail=diamond, label="hija Qt"];
+    Ventana -> Audio [dir=back, arrowtail=diamond];
+    Audio -> QSoundEffect [dir=back, arrowtail=diamond, label="5"];
+  }
+
+  subgraph cluster_logica {
+    label="Lógica de juego · C++17";
+    style=rounded; color="#699887";
+    Partida [label="{Partida|- nivel_ : unique_ptr de Nivel\l- pantalla_ : Pantalla\l- dificultad_ : Dificultad\l|+ iniciar(dificultad)\l+ continuarMision()\l+ reiniciarNivel()\l+ cambiarPausa()\l+ volverAlMenu()\l+ actualizar(entrada, dt, eventos)\l}"];
+    Nivel [label="{«abstracta» Nivel|# batman_ : unique_ptr de Batman\l# resultado_ : Resultado\l|+ actualizar(entrada, dt, eventos) = 0\l+ batman() : const Batman&\l+ resultado() : Resultado\l}"];
+    Infiltracion [label="{Infiltracion|- perfil_ : PerfilDificultad\l- paredes_ : vector de Rectangulo\l- guardias_ : vector de unique_ptr\l- reflectores_ : vector de Reflector\l- evidencias_ : vector de Evidencia\l|+ actualizar(entrada, dt, eventos)\l- interactuar(eventos)\l- actualizarVigilancia(ruido, dt, eventos)\l}"];
+    Rescate [label="{Rescate|- parametros_ : ParametrosRescate\l- techos_ : vector de Rectangulo\l- civiles_ : vector de unique_ptr\l- pendulo_ : optional de Pendulo\l- recorrido_ : deque de Muestra\l|+ actualizar(entrada, dt, eventos)\l+ anclajeDisponible()\l- aplicarGancho(direccion, eventos)\l- actualizarCiviles(dt)\l}"];
+    Personaje [label="{Personaje|- posicion_, velocidad_ : Punto\l- orientacion_ : int\l|+ trasladar(posicion, velocidad)\l+ posicion(), velocidad(), orientacion()\l+ destructor virtual\l}"];
+    Batman [label="{Batman|- detective_, esperaDetective_, esperaSalto_ : double\l- evidencias_, detecciones_ : int\l|+ activarDetective()\l+ actualizarHabilidades(dt)\l+ recogerEvidencia()\l+ registrarDeteccion()\l}"];
+    Civil [label="{Civil|- siguiendo_, aSalvo_ : bool\l|+ rescatar()\l+ llegarASalvo()\l}"];
+    Guardia [label="{Guardia|- conducta_ : Conducta\l- patrulla_ : vector de Punto\l- objetivo_ : optional de Punto\l|+ actualizar(batman, ruido, dt, perfil, paredes)\l+ reiniciarPatrulla()\l}"];
+    Percepcion [label="{Percepcion|+ ver(origen, objetivo, angulo, perfil, paredes)\l+ oir(origen, ruido, intensidad, perfil)\l}"];
+    Razonamiento [label="{Razonamiento|+ decidir(ve, oye, hayObjetivo, quedaBusqueda)\l}"];
+    Accion [label="{Accion|- ruta_ : vector de Punto\l|+ avanzar(desde, hacia, rapidez, dt, paredes)\l+ reiniciar()\l}"];
+    Aprendizaje [label="{Aprendizaje|- encuentros_ : array de 3 int\l|+ registrar(posicion)\l+ zonaPrioritaria()\l}"];
+    Pendulo [label="{Pendulo|- anclaje_ : Punto\l- longitud_, angulo_, rapidezAngular_ : double\l|+ avanzar(gravedad, dt)\l+ posicion(), velocidad(), anclaje()\l}"];
+    Reflector [label="{Reflector|+ origen : Punto\l+ central, amplitud, frecuencia, fase : double\l+ alcance, semiApertura : double\l|+ angulo(tiempo, factorRapidez)\l}"];
+
+    Partida -> Nivel [dir=back, arrowtail=diamond, label="0..1"];
+    Infiltracion -> Nivel [arrowhead=empty, constraint=false];
+    Rescate -> Nivel [arrowhead=empty, constraint=false];
+    Nivel -> Infiltracion [style=invis];
+    Nivel -> Rescate [style=invis];
+    Nivel -> Batman [dir=back, arrowtail=diamond];
+    Infiltracion -> Guardia [dir=back, arrowtail=diamond, label="2"];
+    Infiltracion -> Reflector [dir=back, arrowtail=diamond, label="2"];
+    Rescate -> Civil [dir=back, arrowtail=diamond, label="2"];
+    Rescate -> Pendulo [dir=back, arrowtail=diamond, label="0..1"];
+    Batman -> Personaje [arrowhead=empty, constraint=false];
+    Guardia -> Personaje [arrowhead=empty, constraint=false];
+    Civil -> Personaje [arrowhead=empty, constraint=false];
+    {rank=same; Infiltracion; Rescate; Personaje;}
+    {rank=same; Guardia; Batman; Civil;}
+    Guardia -> Percepcion [dir=back, arrowtail=diamond];
+    Guardia -> Razonamiento [dir=back, arrowtail=diamond];
+    Guardia -> Accion [dir=back, arrowtail=diamond];
+    Guardia -> Aprendizaje [dir=back, arrowtail=diamond];
+  }
+
+  Ventana -> Partida [dir=back, arrowtail=diamond];
+  Vista -> Partida [arrowhead=vee, style=dashed, label="consulta"];
+}

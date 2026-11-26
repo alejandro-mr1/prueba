@@ -1,0 +1,43 @@
+digraph Resumen {
+  graph [rankdir=TB, bgcolor="white", pad=0.28, nodesep=0.31, ranksep=0.56, splines=polyline,
+         fontname="DejaVu Sans", labelloc=t, label="Batman: Operación Bronx — clases principales"];
+  node [shape=box, style="filled,rounded", fontname="DejaVu Sans", fontsize=11,
+        color="#546579", fillcolor="#f3f8f6", margin="0.13,0.08"];
+  edge [fontname="DejaVu Sans", fontsize=9, color="#52677c", arrowsize=0.85];
+  Ventana [label="Ventana\nQt Widgets", fillcolor="#e8f1fa"];
+  Vista [label="Vista\nQPainter", fillcolor="#e8f1fa"];
+  Audio [label="Audio\nQSoundEffect", fillcolor="#e8f1fa"];
+  Partida [label="Partida\nFlujo y nivel activo"];
+  Nivel [label="«abstracta» Nivel"];
+  Infiltracion [label="Infiltración\nEvidencias y reflectores"];
+  Rescate [label="Rescate\nTechos, salto y balanceo"];
+  Personaje [label="Personaje\nPosición y velocidad"];
+  Guardia [label="Guardia\nAgente con memoria"];
+  Civil; Batman; Pendulo [label="Péndulo"]; Reflector;
+  Percepcion [label="Percepción"]; Razonamiento; Accion [label="Acción"]; Aprendizaje;
+
+  {rank=same; Vista; Ventana; Audio;}
+  Ventana -> Vista [dir=back, arrowtail=diamond];
+  Ventana -> Audio [dir=back, arrowtail=diamond];
+  Ventana -> Partida [dir=back, arrowtail=diamond];
+  Vista -> Partida [arrowhead=vee, style=dashed];
+  Partida -> Nivel [dir=back, arrowtail=diamond];
+  Nivel -> Infiltracion [style=invis];
+  Nivel -> Rescate [style=invis];
+  Infiltracion -> Nivel [arrowhead=empty, constraint=false];
+  Rescate -> Nivel [arrowhead=empty, constraint=false];
+  Nivel -> Batman [dir=back, arrowtail=diamond];
+  Infiltracion -> Guardia [dir=back, arrowtail=diamond];
+  Infiltracion -> Reflector [dir=back, arrowtail=diamond];
+  Rescate -> Civil [dir=back, arrowtail=diamond];
+  Rescate -> Pendulo [dir=back, arrowtail=diamond];
+  {rank=same; Infiltracion; Rescate; Personaje;}
+  {rank=same; Guardia; Batman; Civil;}
+  Guardia -> Personaje [arrowhead=empty, constraint=false];
+  Batman -> Personaje [arrowhead=empty, constraint=false];
+  Civil -> Personaje [arrowhead=empty, constraint=false];
+  Guardia -> Percepcion [dir=back, arrowtail=diamond];
+  Guardia -> Razonamiento [dir=back, arrowtail=diamond];
+  Guardia -> Accion [dir=back, arrowtail=diamond];
+  Guardia -> Aprendizaje [dir=back, arrowtail=diamond];
+}

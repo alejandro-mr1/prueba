@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/juego">
+        <file>alerta.wav</file>
+        <file>ambiente.wav</file>
+        <file>azoteas.jpg</file>
+        <file>barrera.png</file>
+        <file>batman-carrera-1.png</file>
+        <file>batman-carrera-2.png</file>
+        <file>batman-carrera-3.png</file>
+        <file>batman-cenital-lado.png</file>
+        <file>batman-cenital-paso.png</file>
+        <file>batman-espalda.png</file>
+        <file>batman-frente.png</file>
+        <file>batman-gancho.png</file>
+        <file>batman-lateral.png</file>
+        <file>batman-salto.png</file>
+        <file>callejones.jpg</file>
+        <file>civil-1.png</file>
+        <file>civil-2.png</file>
+        <file>civil-espera-1.png</file>
+        <file>civil-espera-2.png</file>
+        <file>confirmar.wav</file>
+        <file>evidencia.png</file>
+        <file>gancho.wav</file>
+        <file>guardia-espalda.png</file>
+        <file>guardia-frente.png</file>
+        <file>guardia-lado.png</file>
+        <file>guardia-paso.png</file>
+        <file>rescate.wav</file>
+    </qresource>
+</RCC>
