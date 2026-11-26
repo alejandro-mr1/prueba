@@ -1,61 +1,11 @@
 #pragma once
 
 #include "geometria.h"
+#include "personaje.h"
 
 #include <array>
 #include <cstddef>
 #include <optional>
-
-class Personaje {
-public:
-    explicit Personaje(Punto posicion) : posicion_(posicion) {}
-    virtual ~Personaje() = default;
-    Punto posicion() const { return posicion_; }
-    Punto velocidad() const { return velocidad_; }
-    int orientacion() const { return orientacion_; }
-    void trasladar(Punto posicion, Punto velocidad = {});
-
-private:
-    Punto posicion_;
-    Punto velocidad_;
-    int orientacion_ = 1;
-};
-
-class Batman final : public Personaje {
-public:
-    using Personaje::Personaje;
-    void actualizarHabilidades(double dt);
-    bool activarDetective();
-    void cancelarDetective();
-    bool saltoEspecialDisponible() const { return esperaSalto_ <= 0.0; }
-    void aterrizarTrasSaltoEspecial() { esperaSalto_ = 1.25; }
-    double detectiveRestante() const { return detective_; }
-    double esperaDetective() const { return esperaDetective_; }
-    int evidencias() const { return evidencias_; }
-    int detecciones() const { return detecciones_; }
-    void recogerEvidencia() { ++evidencias_; }
-    void registrarDeteccion() { ++detecciones_; }
-
-private:
-    double detective_ = 0.0;
-    double esperaDetective_ = 0.0;
-    double esperaSalto_ = 0.0;
-    int evidencias_ = 0;
-    int detecciones_ = 0;
-};
-
-class Civil final : public Personaje {
-public:
-    using Personaje::Personaje;
-    void rescatar() { siguiendo_ = true; }
-    void llegarASalvo() { siguiendo_ = false; aSalvo_ = true; }
-    bool siguiendo() const { return siguiendo_; }
-    bool aSalvo() const { return aSalvo_; }
-
-private:
-    bool siguiendo_ = false;
-    bool aSalvo_ = false;
-};
 
 struct PerfilDificultad {
     double alcanceVision;

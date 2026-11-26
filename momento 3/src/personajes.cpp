@@ -83,36 +83,6 @@ std::vector<Punto> buscarRuta(Punto origen, Punto destino, const std::vector<Rec
 }
 }
 
-void Personaje::trasladar(Punto posicion, Punto velocidad)
-{
-    posicion_ = posicion;
-    velocidad_ = velocidad;
-    if (std::abs(velocidad.x) > 0.01)
-        orientacion_ = velocidad.x < 0.0 ? -1 : 1;
-}
-
-void Batman::actualizarHabilidades(double dt)
-{
-    detective_ = std::max(0.0, detective_ - dt);
-    esperaDetective_ = std::max(0.0, esperaDetective_ - dt);
-    esperaSalto_ = std::max(0.0, esperaSalto_ - dt);
-}
-
-bool Batman::activarDetective()
-{
-    if (esperaDetective_ > 0.0)
-        return false;
-    detective_ = 8.0;
-    esperaDetective_ = 13.0;
-    return true;
-}
-
-void Batman::cancelarDetective()
-{
-    detective_ = 0.0;
-    esperaDetective_ = 0.0;
-}
-
 bool Percepcion::ver(Punto origen, Punto objetivo, double angulo, const PerfilDificultad& perfil,
                      const std::vector<Rectangulo>& paredes) const
 {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "batman.h"
+#include "civil.h"
 #include "personajes.h"
 
 #include <deque>
